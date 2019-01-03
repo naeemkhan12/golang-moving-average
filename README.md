@@ -3,16 +3,19 @@ Moving average implementation for Go
 
 ## Usage 
 ```
-import "github.com/naeemkhan12/golang-moving-average"
+import (
+  "time"
+  movingaverage "github.com/naeemkhan12/golang-moving-average"
+)
 
 ma := movingaverage.New(5) // 5 is the window size
-ma.Add(10)
-ma.Add(15)
-ma.Add(20)
-ma.Add(1)
-ma.Add(1)
-ma.Add(5) // This one will effectively overwrite the first value (10 in this example)
-avg := ma.Avg() // Will return 8.4
+ma.Add(movingaverage.Values{10,time.Now()})
+ma.Add(movingaverage.Values{15,time.Now()})
+ma.Add(movingaverage.Values{20,time.Now()})
+ma.Add(movingaverage.Values{1,time.Now()})
+ma.Add(movingaverage.Values{2,time.Now()})
+ma.Add(movingaverage.Values{5,time.Now()}) // This one will effectively overwrite the first value (10 in this example)
+avg := ma.Avg() 
 ```
 
 ## Partially used windows
