@@ -1,13 +1,19 @@
 package movingaverage
-
+import (
+	"time"
+)
 // @author Robin Verlangen
 // Moving average implementation for Go
 
 type MovingAverage struct {
 	Window int
-	values []float64
+	Values []Values
 	valPos int
 	slotsFilled bool
+}
+type Values struct {
+	Value float64
+	Time time.Time
 }
 
 func (ma *MovingAverage) Avg() float64 {
@@ -23,10 +29,10 @@ func (ma *MovingAverage) Avg() float64 {
 		}
 	}
 
-	// Sum values
+	// Sum Values
 	var ic = 0
 	for i := 0; i <= c; i++ {
-		sum += ma.values[i]
+		sum += ma.Values[i].Value
 		ic++
 	}
 
@@ -35,9 +41,9 @@ func (ma *MovingAverage) Avg() float64 {
 	return avg
 }
 
-func (ma *MovingAverage) Add(val float64) {
-	// Put into values array
-	ma.values[ma.valPos] = val
+func (ma *MovingAverage) Add(val Values) {
+	// Put into Values array
+	ma.Values[ma.valPos] = val
 
 	// Increment value position
 	ma.valPos = (ma.valPos + 1) % ma.Window
@@ -51,7 +57,7 @@ func (ma *MovingAverage) Add(val float64) {
 func New(window int) *MovingAverage {
 	return &MovingAverage{
 		Window : window,
-		values : make([]float64, window),
+		Values : make([]Values, window),
 		valPos : 0,
 		slotsFilled : false,
 	}
